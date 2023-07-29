@@ -2,6 +2,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+import { ContextProvider } from "@/components/context-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
+        <ContextProvider>
+          <div className="">{children}</div>
+        </ContextProvider>
       </body>
     </html>
   );
