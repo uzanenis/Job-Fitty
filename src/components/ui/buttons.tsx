@@ -10,7 +10,7 @@ export const LoginButton = () => {
     <Button
       variant="outline"
       className="flex gap-2 px-4"
-      onClick={() => signIn()}
+      onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
     >
       <p className="whitespace-nowrap">Sign in</p>
     </Button>
