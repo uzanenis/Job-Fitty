@@ -7,10 +7,6 @@ export const siteConfig = {
   getHeaderLinks: (isLoggedIn: boolean) => {
     const items = [
       {
-        title: "Home",
-        href: "/",
-      },
-      {
         title: "About",
         href: "/about",
       },
