@@ -20,12 +20,12 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## TODO
 
-[x] Preview uploaded pdfs.
-[x] List resume when uploaded
-[x] Create Company Jobs
-[] Footer
-[] Summary page(How many application reviewed? etc..)
-[] Landing page
-[] Contact page
-[] Pricing page
-[] Transcribe meeting interview and review it
+- [x] Preview uploaded pdfs.
+- [x] List resume when uploaded
+- [x] Create Company Jobs
+- [ ] Footer
+- [ ] Summary page(How many application reviewed? etc..)
+- [ ] Landing page
+- [ ] Contact page
+- [ ] Pricing page
+- [ ] Transcribe meeting interview and review it
