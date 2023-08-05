@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { ContextProvider } from "@/components/context-provider";
 import Header from "@/components/header";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
         <ContextProvider>
           <Header />
           <div className="">{children}</div>
+          <Toaster />
         </ContextProvider>
       </body>
     </html>

@@ -9,7 +9,7 @@ const ResumePage = async () => {
   return (
     <div>
       <h2>Upload Resume</h2>
-      <UploadResume />
+      <UploadResume userId={user?.id} />
     </div>
   );
 };

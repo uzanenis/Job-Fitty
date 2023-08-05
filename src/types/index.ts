@@ -1,3 +1,5 @@
+import { Icons } from "@/components/icons";
+
 export interface NavItemProps {
   title: string;
   href?: string;
@@ -8,5 +10,5 @@ export interface NavItemProps {
 export interface DashoardNavProps {
   title: string;
   href?: string;
-  icon?: string;
+  icon?: keyof typeof Icons;
 }

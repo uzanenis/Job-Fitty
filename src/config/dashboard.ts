@@ -5,27 +5,27 @@ export const dashboardConfig = {
     {
       title: "Upload Resume",
       href: "/dashboard/resume",
-      //icon: "raceCar",
+      icon: "review",
     },
     {
-      title: "View Interview Summary",
+      title: "Interview Summary",
       href: "/dashboard/summary",
-      //icon: "snippet",
+      icon: "brain",
     },
     {
       title: "Company Jobs",
       href: "/dashboard/companyjobs",
-      //icon: "keyboard",
+      icon: "building",
     },
     {
       title: "Upload Meeting(Soon)",
       href: "/dashboard/meeting",
-      //icon: "darts",
+      icon: "monitorPlay",
     },
     {
       title: "Statistics",
       href: "/dashboard/statistics",
-      //icon: "crown",
+      icon: "lineChart",
     },
   ] satisfies DashoardNavProps[],
 };
