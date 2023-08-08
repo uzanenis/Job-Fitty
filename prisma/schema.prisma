@@ -89,4 +89,6 @@ model Job {
   languageRequirement String?
   additionalInfo      String?
   userId              String
+
+  @@map("jobs")
 }

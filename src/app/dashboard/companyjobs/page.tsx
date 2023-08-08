@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
-import CreateJobForm from "./_components/create-job-form";
+import ListJobsCard from "./_components/list-jobs-card";
+import CreateJobCard from "./_components/create-job-card";
 
 const CompanyJobsPage = async () => {
   const user = await getCurrentUser();
@@ -8,8 +9,9 @@ const CompanyJobsPage = async () => {
 
   return (
     <div className="py-16">
-      <section className="max-w-xl mx-auto">
-        <CreateJobForm />
+      <section className="max-w-4xl	grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <ListJobsCard />
+        <CreateJobCard />
       </section>
     </div>
   );

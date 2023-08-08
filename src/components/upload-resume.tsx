@@ -3,6 +3,9 @@
 import React, { use, useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { v4 as uuidv4 } from "uuid";
+import { useToast } from "./ui/use-toast";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
 
 interface UploadResumeProps {
   userId: string;
@@ -23,13 +26,14 @@ interface Resume {
 const UploadResume = ({ userId }: UploadResumeProps) => {
   const supabase = createClientComponentClient();
   const cdnUrl = `https://tkefcayfqqsgntdcklpy.supabase.co/storage/v1/object/public/resumes/${userId}/`;
+  const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [resumes, setResumes] = useState([]);
 
   useEffect(() => {
     getResumes();
-  }, []);
+  }, [loading]);
 
   const getResumes = async () => {
     const { data, error } = await supabase.storage
@@ -55,7 +59,8 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     setFile(event.target.files[0]);
   };
 
-  const handleUpload = async () => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
     if (!file) return;
     setLoading(true);
     try {
@@ -65,19 +70,36 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
       if (uploadError) {
         console.error(uploadError);
       } else {
+        toast({
+          title: "Success!",
+          description: "Analyze It",
+          action: (
+            <Link
+              href="/dashboard/resume"
+              className={buttonVariants({ variant: "outline" })}
+            >
+              Analyze Resume
+            </Link>
+          ),
+        });
         await getResumes();
         console.log("PDF başarıyla yüklendi!");
       }
     } catch (error) {
+      toast({
+        title: "Error!",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input accept="application/pdf" type="file" onChange={handleChange} />
-      <button onClick={handleUpload}>Yükle</button>
+      <Button type="submit">Yükle</Button>
       {loading ? (
         <div>Yükleniyor...</div>
       ) : (

@@ -23,9 +23,16 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [x] Preview uploaded pdfs.
 - [x] List resume when uploaded
 - [x] Create Company Jobs
+- [ ] Create and List company jobs in dialog
+- [ ] Refactore upload resume form to shadcn Form
+- [ ] Select pdf and analyze by job posting
+- [ ] Analyze resume with OpenAI
 - [ ] Footer
 - [ ] Summary page(How many application reviewed? etc..)
 - [ ] Landing page
 - [ ] Contact page
 - [ ] Pricing page
+- [ ] About page
+- [ ] Privacy page
+- [ ] Stripe
 - [ ] Transcribe meeting interview and review it
