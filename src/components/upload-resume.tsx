@@ -1,12 +1,25 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "./ui/use-toast";
+import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "./ui/button";
-import Link from "next/link";
-
+import { Loader2 } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 interface UploadResumeProps {
   userId: string;
 }
@@ -23,10 +36,26 @@ interface Resume {
   };
 }
 
+const formDataSchema = z.object({
+  candidateName: z.string().min(1),
+  resume: z.any(),
+});
+
+type FormData = z.infer<typeof formDataSchema>;
+
 const UploadResume = ({ userId }: UploadResumeProps) => {
   const supabase = createClientComponentClient();
   const cdnUrl = `https://tkefcayfqqsgntdcklpy.supabase.co/storage/v1/object/public/resumes/${userId}/`;
   const { toast } = useToast();
+  const form = useForm<FormData>({
+    resolver: zodResolver(formDataSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      candidateName: "",
+      resume: null,
+    },
+  });
+
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [resumes, setResumes] = useState([]);
@@ -59,17 +88,21 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     setFile(event.target.files[0]);
   };
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    if (!file) return;
-    setLoading(true);
+  const onSubmit = async (data: FormData) => {
+    if (!file) {
+      throw new Error("You must select an pdf to upload.");
+    }
+    const newName = data.candidateName.replace(" ", "-");
     try {
-      const { data, error: uploadError } = await supabase.storage
+      setLoading(true);
+      const { data: uploadData, error: uploadError } = await supabase.storage
         .from("resumes")
-        .upload(userId + "/" + uuidv4(), file);
+        .upload(userId + "/" + newName + uuidv4(), file);
       if (uploadError) {
         console.error(uploadError);
       } else {
+        setFile(null);
+
         toast({
           title: "Success!",
           description: "Analyze It",
@@ -82,8 +115,9 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
             </Link>
           ),
         });
+        form.reset();
         await getResumes();
-        console.log("PDF başarıyla yüklendi!");
+        console.log("PDF başarıyla yüklendi!", uploadData);
       }
     } catch (error) {
       toast({
@@ -97,14 +131,58 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input accept="application/pdf" type="file" onChange={handleChange} />
-      <Button type="submit">Yükle</Button>
+    <>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-3 mt-5"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            name="candidateName"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Candidate Name</FormLabel>
+                <Input {...field} placeholder="Candidate Name" />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name="resume"
+            control={form.control}
+            render={({ field: { value, onChange, ...field } }) => (
+              <FormItem className="w-full">
+                <FormLabel>Pdf File</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    value={value?.fileName}
+                    onChange={handleChange}
+                    type="file"
+                    accept="application/pdf"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-fit text-accent mt-2">
+            {loading ? (
+              <>
+                Yükleniyor <Loader2 className="mx-2 h-4 w-4 animate-spin" />
+              </>
+            ) : (
+              "Upload Resume"
+            )}
+          </Button>
+        </form>
+      </Form>
       {loading ? (
-        <div>Yükleniyor...</div>
+        <Loader2 className="mx-2 h-16 w-16 animate-spin" />
       ) : (
         <div>
-          {resumes &&
+          {resumes.length > 0 &&
             resumes.map((resume: Resume) => (
               <div key={resume.id}>
                 <a href={cdnUrl + resume.name} target="_blank">
@@ -114,7 +192,7 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
             ))}
         </div>
       )}
-    </form>
+    </>
   );
 };
 

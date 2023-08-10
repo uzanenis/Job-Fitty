@@ -34,7 +34,7 @@ const JobsPage = async ({
   const pageCount = totalJobs === 0 ? 1 : Math.ceil(totalJobs / take);
 
   return (
-    <section>
+    <section className="max-w-4xl py-6">
       <ListJobs jobs={jobs} pageCount={pageCount} />
     </section>
   );

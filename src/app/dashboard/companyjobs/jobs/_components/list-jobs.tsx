@@ -1,6 +1,9 @@
 "use client";
 
 import { Job } from "@prisma/client";
+import { useMemo } from "react";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "./data-table";
 const ListJobs = async ({
   jobs,
   pageCount,
@@ -8,20 +11,43 @@ const ListJobs = async ({
   jobs: Job[];
   pageCount: number;
 }) => {
+  const columns = useMemo<ColumnDef<Job, unknown>[]>(
+    () => [
+      {
+        accessorFn: (job) => job.title,
+        header: "Title",
+      },
+      {
+        accessorFn: (job) => job.description,
+        header: "Description",
+      },
+      {
+        accessorFn: (job) => job.experience,
+        header: "Experience",
+      },
+      {
+        accessorFn: (job) => job.position,
+        header: "Position",
+      },
+      {
+        accessorFn: (job) => job.technologies.join(", "),
+        header: "Technologies",
+      },
+      {
+        accessorFn: (job) => job.workType,
+        header: "Work Type",
+      },
+      {
+        accessorFn: (job) => new Date(job.createdAt).toLocaleDateString(),
+        header: "Created At",
+      },
+    ],
+    []
+  );
   return (
-    <div>
-      {jobs.map((job) => (
-        <div key={job.id}>
-          <h2>{job.title}</h2>
-          <p>{job.description}</p>
-          <p>Experience: {job.experience}</p>
-          <p>Position: {job.position}</p>
-          <p>Technologies: {job.technologies.join(", ")}</p>
-          <p>Work Type: {job.workType}</p>
-          <div>Created At: {new Date(job.createdAt).toLocaleDateString()}</div>
-        </div>
-      ))}
-    </div>
+    <>
+      <DataTable columns={columns} data={jobs} />
+    </>
   );
 };
 

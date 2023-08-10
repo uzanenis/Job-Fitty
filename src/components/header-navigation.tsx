@@ -3,6 +3,7 @@
 import { siteConfig } from "@/config/site";
 import { cn, isActiveRoute } from "@/lib/utils";
 import { NavItemProps } from "@/types";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,7 +12,15 @@ const HeaderNavigation = ({ items }: { items?: NavItemProps[] }) => {
   return (
     <div className="flex items-center h-full gap-5">
       <Link href="/" className="flex items-center space-x-2">
-        <span>Icon</span>
+        <span>
+          <Image
+            src="/logo.png"
+            alt="Ai Interview"
+            width={28}
+            height={28}
+            className="object-contain rounded-full"
+          />
+        </span>
         <span className="font-special font-bold ">{siteConfig.name}</span>
       </Link>
       {items?.length && (
