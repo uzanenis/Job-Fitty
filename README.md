@@ -25,8 +25,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [x] Create Company Jobs
 - [x] Create and List company jobs in dialog
 - [x] Refactor upload resume form to shadcn Form
-- [ ] Components back buttons
-- [ ] Create component header
+- [x] Components back buttons
+- [x] Create component header
+- [ ] Upload pdf text to database
 - [ ] Select pdf and analyze by job posting
 - [ ] Analyze resume with OpenAI
 - [ ] Footer

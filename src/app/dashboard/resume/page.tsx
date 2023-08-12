@@ -1,3 +1,4 @@
+import { PrevButton } from "@/components/ui/buttons";
 import UploadResume from "@/components/upload-resume";
 import { getCurrentUser } from "@/lib/session";
 import { redirect } from "next/navigation";
@@ -7,10 +8,9 @@ const ResumePage = async () => {
   if (!user) redirect("/auth");
 
   return (
-    <div>
-      <h2>Upload Resume</h2>
+    <section>
       <UploadResume userId={user?.id} />
-    </div>
+    </section>
   );
 };
 

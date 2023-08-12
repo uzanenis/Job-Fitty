@@ -73,10 +73,10 @@ const CreateJobForm = () => {
         duration: 5000,
         action: (
           <Link
-            href="/dashboard/resume"
+            href="/dashboard/companyjobs/jobs"
             className={buttonVariants({ variant: "outline" })}
           >
-            Click to Analyse Resume
+            Let's see your job posts
           </Link>
         ),
       });

@@ -5,6 +5,7 @@ import ListJobs from "./_components/list-jobs";
 import { getJobs, getTotalJobs } from "../loaders";
 import { Job } from "@prisma/client";
 import { useState } from "react";
+import { PrevButton } from "@/components/ui/buttons";
 const JobsPage = async ({
   searchParams,
 }: {
@@ -35,6 +36,7 @@ const JobsPage = async ({
 
   return (
     <section className="max-w-4xl py-6">
+      <PrevButton url="/dashboard/companyjobs" />
       <ListJobs jobs={jobs} pageCount={pageCount} />
     </section>
   );

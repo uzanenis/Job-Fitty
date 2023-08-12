@@ -17,7 +17,9 @@ export default async function DashboardLayout({
           <SidebarNav items={dashboardConfig.sidebarNav} />
         </ScrollArea>
       </aside>
-      <main className="flex w-full flex-col overflow-hidden">{children}</main>
+      <main className="flex w-full flex-col overflow-hidden pt-4">
+        {children}
+      </main>
       <div className="md:hidden">
         <ScrollArea className="py-6 pr-6 lg:py-8">
           <SidebarNav items={dashboardConfig.sidebarNav} />

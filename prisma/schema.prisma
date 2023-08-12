@@ -27,6 +27,8 @@ model User {
   role          UserRole  @default(USER)
   PdfFile       PdfFile[]
   Job           Job[]
+
+  @@map("users")
 }
 
 model Account {
@@ -45,6 +47,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
@@ -53,6 +56,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model VerificationToken {
@@ -61,6 +66,7 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model PdfFile {
@@ -68,8 +74,11 @@ model PdfFile {
   createdAt DateTime @default(now())
   fileName  String
   fileUrl   String
+  fileText  String
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
+
+  @@map("pdf_files")
 }
 
 model Job {

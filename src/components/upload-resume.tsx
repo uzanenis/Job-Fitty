@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "./ui/use-toast";
+import { useForm } from "react-hook-form";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Button, buttonVariants } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import {
   Form,
@@ -17,9 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 interface UploadResumeProps {
   userId: string;
 }
@@ -37,7 +37,7 @@ interface Resume {
 }
 
 const formDataSchema = z.object({
-  candidateName: z.string().min(1),
+  candidateName: z.string().optional(),
   resume: z.any(),
 });
 
@@ -92,7 +92,7 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     if (!file) {
       throw new Error("You must select an pdf to upload.");
     }
-    const newName = data.candidateName.replace(" ", "-");
+    const newName = data.candidateName?.replace(" ", "-");
     try {
       setLoading(true);
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -142,7 +142,7 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Candidate Name</FormLabel>
+                <FormLabel>Candidate Name (optional)</FormLabel>
                 <Input {...field} placeholder="Candidate Name" />
                 <FormMessage />
               </FormItem>
