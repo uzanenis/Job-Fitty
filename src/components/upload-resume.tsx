@@ -5,6 +5,12 @@ import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { pdfjs } from "react-pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
 import { v4 as uuidv4 } from "uuid";
 import { useToast } from "./ui/use-toast";
 import { useForm } from "react-hook-form";
@@ -20,6 +26,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { createPdfFile } from "@/app/dashboard/resume/actions";
 interface UploadResumeProps {
   userId: string;
 }
@@ -81,6 +88,41 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     }
   };
 
+  const pdfToText = async (file: File, url: string, fileName: string) => {
+    const fileReader = new FileReader();
+    fileReader.onload = async () => {
+      const typedarray = new Uint8Array(fileReader.result as ArrayBuffer);
+      const pdf = await pdfjs.getDocument(typedarray).promise;
+      const numberOfPages = pdf.numPages;
+      let chunks = [];
+      for (let i = 1; i <= numberOfPages; i++) {
+        const page = await pdf.getPage(i);
+        const text = await page.getTextContent();
+        const pageText = text.items
+          .map((item) =>
+            // @ts-ignore
+            item.str
+              .replace(
+                /[^a-zA-Z0-9\s\d.,!?/()\[\]{}:;'"<>@#$%^&*_+=|\\\-]/g,
+                ""
+              )
+              .replace(/\s+/g, " ")
+          )
+          .join("");
+        chunks.push(pageText);
+      }
+      const text = chunks.join("\n");
+      const data = {
+        fileName,
+        fileUrl: url,
+        fileText: text,
+      };
+      await createPdfFile(data);
+      console.log(text);
+    };
+    fileReader.readAsArrayBuffer(file);
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) {
       throw new Error("You must select an pdf to upload.");
@@ -92,17 +134,18 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     if (!file) {
       throw new Error("You must select an pdf to upload.");
     }
-    const newName = data.candidateName?.replace(" ", "-");
     try {
       setLoading(true);
+      const newName = data.candidateName?.replace(" ", "-");
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("resumes")
-        .upload(userId + "/" + newName + uuidv4(), file);
+        .upload(userId + "/" + newName + "--" + uuidv4(), file);
       if (uploadError) {
         console.error(uploadError);
       } else {
         setFile(null);
-
+        const url = cdnUrl + uploadData.path;
+        await pdfToText(file, url, uploadData.path);
         toast({
           title: "Success!",
           description: "Analyze It",
