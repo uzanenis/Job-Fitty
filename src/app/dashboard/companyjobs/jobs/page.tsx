@@ -1,10 +1,8 @@
 import { getCurrentUser } from "@/lib/session";
-import { NextPage } from "next";
 import { redirect } from "next/navigation";
 import ListJobs from "./_components/list-jobs";
 import { getJobs, getTotalJobs } from "../loaders";
 import { Job } from "@prisma/client";
-import { useState } from "react";
 import { PrevButton } from "@/components/ui/buttons";
 const JobsPage = async ({
   searchParams,
@@ -13,6 +11,9 @@ const JobsPage = async ({
     [key: string]: string | string[] | undefined;
   };
 }) => {
+  const user = await getCurrentUser();
+  if (!user) redirect("/auth");
+
   const { page, per_page, sort } = searchParams;
 
   // Number of records to show per page
@@ -27,8 +28,6 @@ const JobsPage = async ({
 
   const sortBy = column === "createdAt" ? "createdAt" : (column as string);
 
-  const user = await getCurrentUser();
-  if (!user) redirect("/auth");
   const jobs = await getJobs({ take, skip, sortBy, order });
 
   const totalJobs = await getTotalJobs();

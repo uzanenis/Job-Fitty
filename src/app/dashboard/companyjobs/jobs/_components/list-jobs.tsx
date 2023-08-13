@@ -1,16 +1,12 @@
 "use client";
 
 import { Job } from "@prisma/client";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "./data-table";
-const ListJobs = async ({
-  jobs,
-  pageCount,
-}: {
-  jobs: Job[];
-  pageCount: number;
-}) => {
+import { DataTable } from "@/components/ui/data-table";
+import { useRouter } from "next/navigation";
+const ListJobs = ({ jobs, pageCount }: { jobs: Job[]; pageCount: number }) => {
+  const router = useRouter();
   const columns = useMemo<ColumnDef<Job, unknown>[]>(
     () => [
       {
@@ -44,6 +40,11 @@ const ListJobs = async ({
     ],
     []
   );
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
+
   return (
     <>
       <DataTable columns={columns} data={jobs} />

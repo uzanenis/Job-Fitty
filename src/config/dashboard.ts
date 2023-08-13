@@ -3,13 +3,13 @@ import { DashoardNavProps } from "@/types";
 export const dashboardConfig = {
   sidebarNav: [
     {
-      title: "Upload Resume",
+      title: "Resumes",
       href: "/dashboard/resume",
       icon: "review",
     },
     {
-      title: "Interview Summary",
-      href: "/dashboard/summary",
+      title: "Analyze Candidate",
+      href: "/dashboard/analyze",
       icon: "brain",
     },
     {
@@ -18,14 +18,14 @@ export const dashboardConfig = {
       icon: "building",
     },
     {
-      title: "Upload Meeting(Soon)",
-      href: "/dashboard/meeting",
-      icon: "monitorPlay",
-    },
-    {
       title: "Statistics",
       href: "/dashboard/statistics",
       icon: "lineChart",
+    },
+    {
+      title: "Upload Meeting(Soon)",
+      href: "/dashboard/meeting",
+      icon: "monitorPlay",
     },
   ] satisfies DashoardNavProps[],
 };

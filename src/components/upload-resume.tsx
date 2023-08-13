@@ -67,27 +67,6 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
   const [loading, setLoading] = useState(false);
   const [resumes, setResumes] = useState([]);
 
-  useEffect(() => {
-    getResumes();
-  }, [loading]);
-
-  const getResumes = async () => {
-    const { data, error } = await supabase.storage
-      .from("resumes")
-      .list(userId + "/", {
-        limit: 10,
-        offset: 0,
-        sortBy: { column: "created_at", order: "desc" },
-      });
-    if (error) {
-      console.error(error);
-    } else {
-      //@ts-ignore
-      setResumes(data);
-      console.log(data);
-    }
-  };
-
   const pdfToText = async (file: File, url: string, fileName: string) => {
     const fileReader = new FileReader();
     fileReader.onload = async () => {
@@ -137,15 +116,17 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
     try {
       setLoading(true);
       const newName = data.candidateName?.replace(" ", "-");
+      let fileNameTemp = newName + "--" + uuidv4();
+      const fileName = userId + "/" + fileNameTemp;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("resumes")
-        .upload(userId + "/" + newName + "--" + uuidv4(), file);
+        .upload(fileName, file);
       if (uploadError) {
         console.error(uploadError);
       } else {
         setFile(null);
-        const url = cdnUrl + uploadData.path;
-        await pdfToText(file, url, uploadData.path);
+        const url = cdnUrl + fileNameTemp;
+        await pdfToText(file, url, fileNameTemp);
         toast({
           title: "Success!",
           description: "Analyze It",
@@ -159,7 +140,6 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
           ),
         });
         form.reset();
-        await getResumes();
         console.log("PDF başarıyla yüklendi!", uploadData);
       }
     } catch (error) {
@@ -221,20 +201,6 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
           </Button>
         </form>
       </Form>
-      {loading ? (
-        <Loader2 className="mx-2 h-16 w-16 animate-spin" />
-      ) : (
-        <div>
-          {resumes.length > 0 &&
-            resumes.map((resume: Resume) => (
-              <div key={resume.id}>
-                <a href={cdnUrl + resume.name} target="_blank">
-                  {resume.name}
-                </a>
-              </div>
-            ))}
-        </div>
-      )}
     </>
   );
 };

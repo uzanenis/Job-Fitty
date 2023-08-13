@@ -28,3 +28,16 @@ export async function getPdfFiles({
     },
   });
 }
+
+export async function getTotalPdfFiles() {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("You must be logged in to create a pdfFile.");
+  }
+
+  return prisma.pdfFile.count({
+    where: {
+      userId: user.id,
+    },
+  });
+}

@@ -28,6 +28,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [x] Components back buttons
 - [x] Create component header
 - [x] Upload pdf text to database
+- [ ] Table pagination
+- [ ] CRUD on list
+- [ ] Clear file input after submit resume
 - [ ] Select pdf and analyze by job posting
 - [ ] Analyze resume with OpenAI
 - [ ] Footer
