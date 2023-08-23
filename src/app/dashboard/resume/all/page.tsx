@@ -39,7 +39,7 @@ const ResumeAllPage = async ({
   return (
     <section className="max-w-4xl py-6">
       <PrevButton url="/dashboard/resume" />
-      <ListResumes resumes={resumes} pageCount={pageCount} />
+      <ListResumes userId={user?.id} resumes={resumes} pageCount={pageCount} />
     </section>
   );
 };

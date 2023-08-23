@@ -13,7 +13,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
-import { createJob } from "./actions";
+import { createJob, editJob } from "./actions";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -25,6 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Job } from "@prisma/client";
 
 const formDataSchema = z.object({
   title: z.string().min(1),
@@ -38,24 +41,74 @@ const formDataSchema = z.object({
 
 type FormData = z.infer<typeof formDataSchema>;
 
-const CreateJobForm = () => {
+interface CreateJobFormProps {
+  job?: Job;
+}
+
+const CreateJobForm = ({ job }: CreateJobFormProps) => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const isCreateMode = !job;
+
   const form = useForm<FormData>({
     resolver: zodResolver(formDataSchema),
     mode: "onSubmit",
     defaultValues: {
-      title: "",
-      description: "",
-      experience: "",
-      position: "",
-      technologies: "",
-      workType: "",
+      title: job?.title || "",
+      description: job?.description || "",
+      experience: job?.experience || "",
+      position: job?.position || "",
+      technologies: job?.technologies.join(",") || "",
+      workType: job?.workType || "",
       // Set default values for other fields as needed
     },
   });
 
-  async function onSubmit(data: FormData) {
+  const updateJob = async (data: FormData) => {
     try {
+      setLoading(true);
+      const responseData = await editJob({
+        id: job?.id,
+        title: data.title,
+        description: data.description,
+        experience: data.experience,
+        position: data.position,
+        technologies: data.technologies.split(","),
+        workType: data.workType,
+      });
+
+      console.table(responseData);
+
+      toast({
+        title: "Success!",
+        description: "Job post updated successfully",
+        duration: 5000,
+        action: (
+          <Link
+            href="/dashboard/companyjobs/jobs"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Let's see your job posts
+          </Link>
+        ),
+      });
+
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Error!",
+        description: "Something went wrong",
+        duration: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createNewJob = async (data: FormData) => {
+    try {
+      setLoading(true);
       const responseData = await createJob({
         title: data.title,
         description: data.description,
@@ -89,6 +142,16 @@ const CreateJobForm = () => {
         description: "Something went wrong",
         duration: 5000,
       });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function onSubmit(data: FormData) {
+    if (isCreateMode) {
+      await createNewJob(data);
+    } else {
+      await updateJob(data);
     }
   }
 
@@ -183,7 +246,15 @@ const CreateJobForm = () => {
           )}
         />
         <Button className="w-fit text-accent" type="submit">
-          Upload
+          {loading ? (
+            <>
+              Loading <Loader2 className="mx-2 h-4 w-4 animate-spin" />
+            </>
+          ) : job ? (
+            "Edit Job"
+          ) : (
+            "Create Job"
+          )}
         </Button>
       </form>
     </Form>

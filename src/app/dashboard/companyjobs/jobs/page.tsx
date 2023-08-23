@@ -4,6 +4,7 @@ import ListJobs from "./_components/list-jobs";
 import { getJobs, getTotalJobs } from "../loaders";
 import { Job } from "@prisma/client";
 import { PrevButton } from "@/components/ui/buttons";
+import { revalidatePath } from "next/cache";
 const JobsPage = async ({
   searchParams,
 }: {
@@ -32,6 +33,7 @@ const JobsPage = async ({
 
   const totalJobs = await getTotalJobs();
   const pageCount = totalJobs === 0 ? 1 : Math.ceil(totalJobs / take);
+  revalidatePath("/dashboard/companyjobs/jobs");
 
   return (
     <section className="max-w-4xl py-6">

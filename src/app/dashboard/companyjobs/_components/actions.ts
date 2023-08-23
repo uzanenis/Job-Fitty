@@ -28,3 +28,38 @@ export const createJob = safeAction(jobSchema)(async (input) => {
 
   return { message: "job-created-for-review", status: 200 };
 });
+
+export const editJob = safeAction(jobSchema)(async (input) => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    throw new Error("You must be logged in to edit a job.");
+  }
+
+  await prisma.job.update({
+    where: {
+      id: input.id,
+    },
+    data: {
+      ...input,
+    },
+  });
+
+  return { message: "job-edited-for-review", status: 200 };
+});
+
+export const deleteJob = async (inputId: string) => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    throw new Error("You must be logged in to delete a job.");
+  }
+
+  await prisma.job.delete({
+    where: {
+      id: inputId,
+    },
+  });
+
+  return { message: "job-deleted-for-review", status: 200 };
+};
