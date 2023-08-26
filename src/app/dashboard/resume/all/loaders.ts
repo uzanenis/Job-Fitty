@@ -41,3 +41,16 @@ export async function getTotalPdfFiles() {
     },
   });
 }
+
+export const getAllPdfFiles = async () => {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("You must be logged in to create a pdfFile.");
+  }
+
+  return await prisma.pdfFile.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
+};
