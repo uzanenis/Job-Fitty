@@ -41,3 +41,16 @@ export async function getTotalJobs() {
     },
   });
 }
+
+export const getAllJobs = async () => {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("You must be logged in to create a job.");
+  }
+
+  return await prisma.job.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
+};

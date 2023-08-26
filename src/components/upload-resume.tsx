@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { pdfjs } from "react-pdf";
-
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
@@ -20,15 +19,16 @@ import { Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { createPdfFile } from "@/app/dashboard/resume/actions";
+import { PdfFile } from "@prisma/client";
 interface UploadResumeProps {
   userId: string;
+  currentResume?: PdfFile;
 }
 
 interface Resume {
@@ -50,22 +50,24 @@ const formDataSchema = z.object({
 
 type FormData = z.infer<typeof formDataSchema>;
 
-const UploadResume = ({ userId }: UploadResumeProps) => {
+const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
   const supabase = createClientComponentClient();
   const cdnUrl = `https://tkefcayfqqsgntdcklpy.supabase.co/storage/v1/object/public/resumes/${userId}/`;
   const { toast } = useToast();
+
+  const isCreateMode = !currentResume;
+
   const form = useForm<FormData>({
     resolver: zodResolver(formDataSchema),
     mode: "onSubmit",
     defaultValues: {
-      candidateName: "",
+      candidateName: currentResume?.fileName || "",
       resume: null,
     },
   });
 
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [resumes, setResumes] = useState([]);
 
   const pdfToText = async (file: File, url: string, fileName: string) => {
     const fileReader = new FileReader();
@@ -117,7 +119,7 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
       setLoading(true);
       const newName = data.candidateName?.replace(" ", "-");
       let fileNameTemp = newName + "--" + uuidv4();
-      const fileName = userId + "/" + fileNameTemp;
+      const fileName = userId + "/" + fileNameTemp + ".pdf";
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("resumes")
         .upload(fileName, file);
@@ -125,7 +127,7 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
         console.error(uploadError);
       } else {
         setFile(null);
-        const url = cdnUrl + fileNameTemp;
+        const url = cdnUrl + fileNameTemp + ".pdf";
         await pdfToText(file, url, fileNameTemp);
         toast({
           title: "Success!",
@@ -193,7 +195,7 @@ const UploadResume = ({ userId }: UploadResumeProps) => {
           <Button type="submit" className="w-fit text-accent mt-2">
             {loading ? (
               <>
-                Yükleniyor <Loader2 className="mx-2 h-4 w-4 animate-spin" />
+                Loading <Loader2 className="mx-2 h-4 w-4 animate-spin" />
               </>
             ) : (
               "Upload Resume"
