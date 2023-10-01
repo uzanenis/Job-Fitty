@@ -20,7 +20,7 @@ const UploadResumeCard = ({ userId }: { userId: string }) => {
             <Upload className="justify-self-center" size={40} />
             <h2 className="text-3xl font-bold ml-3">Upload a Resume</h2>
           </div>
-          <p className="font-light">
+          <p className="font-light min-h-[48px]">
             Upload a resume for analyze candidates score
           </p>
         </CardHeader>

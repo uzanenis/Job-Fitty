@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Ai Interview",
+  name: "Job Fitty",
   description:
     "Smart Hiring Starts Here: Empower Your Decisions with AI Insights.",
   getHeaderLinks: (isLoggedIn: boolean) => {

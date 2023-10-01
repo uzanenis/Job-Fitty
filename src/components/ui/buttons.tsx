@@ -11,7 +11,7 @@ export const LoginButton = () => {
     <Button
       variant="outline"
       className="flex gap-2 px-4"
-      onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+      onClick={() => signIn("google", { callbackUrl: "/dashboard/resume" })}
     >
       <p className="whitespace-nowrap">Sign in</p>
     </Button>
@@ -19,7 +19,17 @@ export const LoginButton = () => {
 };
 
 export const LogoutButton = () => {
-  return <Button onClick={() => signOut()}>Sign Out</Button>;
+  return (
+    <Button
+      onClick={() =>
+        signOut({
+          callbackUrl: "/",
+        })
+      }
+    >
+      Sign Out
+    </Button>
+  );
 };
 
 export const PrevButton = ({

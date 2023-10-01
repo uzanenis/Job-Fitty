@@ -30,12 +30,12 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [x] Upload pdf text to database
 - [ ] Table pagination
 - [x] CRUD on list
-- [ ] Clear file input after submit resume
-- [ ] Select pdf and analyze by job posting
+- [x] Clear file input after submit resume
+- [x] Select pdf and analyze by job posting
 - [ ] Analyze resume with OpenAI
 - [ ] Footer
 - [ ] Summary page(How many application reviewed? etc..)
-- [ ] Landing page
+- [x] Landing page
 - [ ] Contact page
 - [ ] Pricing page
 - [ ] About page

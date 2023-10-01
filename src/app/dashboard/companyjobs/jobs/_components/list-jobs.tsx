@@ -127,7 +127,7 @@ const ListJobs = ({ jobs, pageCount }: { jobs: Job[]; pageCount: number }) => {
                     <Separator />
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
+                      from your account and remove your data from our servers.
                     </AlertDialogDescription>
                     <AlertDialogFooter>
                       <AlertDialogCancel asChild>

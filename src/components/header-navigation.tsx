@@ -15,7 +15,7 @@ const HeaderNavigation = ({ items }: { items?: NavItemProps[] }) => {
         <span>
           <Image
             src="/logo.png"
-            alt="Ai Interview"
+            alt="Job Fitty"
             width={28}
             height={28}
             className="object-contain rounded-full"

@@ -110,16 +110,16 @@ const ListResumes = ({
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <h2 className="text-3xl font-bold my-3">
-                        Delete This Job
+                        Delete This Resume
                       </h2>
                     </AlertDialogHeader>
                     <AlertDialogTitle>
-                      Are you sure you want to delete this job?
+                      Are you sure you want to delete this resume?
                     </AlertDialogTitle>
                     <Separator />
                     <AlertDialogDescription>
                       This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
+                      from your account and remove your data from our servers.
                     </AlertDialogDescription>
                     <AlertDialogFooter>
                       <AlertDialogCancel asChild>

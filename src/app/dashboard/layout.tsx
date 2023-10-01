@@ -2,8 +2,6 @@ import * as React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { dashboardConfig } from "@/config/dashboard";
 import SidebarNav from "@/components/sidebar-nav";
-import { getCurrentUser } from "@/lib/session";
-import { useRouter } from "next/navigation";
 
 export default async function DashboardLayout({
   children,

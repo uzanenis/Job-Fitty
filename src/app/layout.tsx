@@ -10,7 +10,7 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Interview",
+  title: "Job Fitty",
   description:
     "Smart Hiring Starts Here: Empower Your Decisions with AI Insights.",
 };
