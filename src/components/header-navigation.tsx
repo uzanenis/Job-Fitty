@@ -24,7 +24,7 @@ const HeaderNavigation = ({ items }: { items?: NavItemProps[] }) => {
         <span className="font-special font-bold ">{siteConfig.name}</span>
       </Link>
       {items?.length && (
-        <nav className="items-center justify-center flex-1 h-full md:flex">
+        <nav className="items-center justify-center flex-1 h-full hidden md:flex">
           {items.map(
             (item, index) =>
               item.href && (
