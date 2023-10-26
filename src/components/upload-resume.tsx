@@ -31,18 +31,6 @@ interface UploadResumeProps {
   currentResume?: PdfFile;
 }
 
-interface Resume {
-  id: string;
-  name: string;
-  created_at: string;
-  updated_at: string;
-  last_accessed_at: string;
-  metadata: {
-    size: number;
-    mime_type: string;
-  };
-}
-
 const formDataSchema = z.object({
   candidateName: z.string().optional(),
   resume: z.any(),
@@ -54,8 +42,6 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
   const supabase = createClientComponentClient();
   const cdnUrl = `https://tkefcayfqqsgntdcklpy.supabase.co/storage/v1/object/public/resumes/${userId}/`;
   const { toast } = useToast();
-
-  const isCreateMode = !currentResume;
 
   const form = useForm<FormData>({
     resolver: zodResolver(formDataSchema),
@@ -75,7 +61,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
       const typedarray = new Uint8Array(fileReader.result as ArrayBuffer);
       const pdf = await pdfjs.getDocument(typedarray).promise;
       const numberOfPages = pdf.numPages;
-      let chunks = [];
+      const chunks = [];
       for (let i = 1; i <= numberOfPages; i++) {
         const page = await pdf.getPage(i);
         const text = await page.getTextContent();
@@ -84,6 +70,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
             // @ts-ignore
             item.str
               .replace(
+                // eslint-disable-next-line no-useless-escape
                 /[^a-zA-Z0-9\s\d.,!?/()\[\]{}:;'"<>@#$%^&*_+=|\\\-]/g,
                 ""
               )
@@ -118,7 +105,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
     try {
       setLoading(true);
       const newName = data.candidateName?.replace(" ", "-");
-      let fileNameTemp = newName + "--" + uuidv4();
+      const fileNameTemp = newName + "--" + uuidv4();
       const fileName = userId + "/" + fileNameTemp + ".pdf";
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from("resumes")
@@ -176,7 +163,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
           <FormField
             name="resume"
             control={form.control}
-            render={({ field: { value, onChange, ...field } }) => (
+            render={({ field: { value, ...field } }) => (
               <FormItem className="w-full">
                 <FormLabel>Pdf File</FormLabel>
                 <FormControl>

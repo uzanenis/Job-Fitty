@@ -18,6 +18,7 @@ import {
   FileCheck2,
   ThumbsUp,
   ThumbsDown,
+  // @ts-ignore
   type Icon as LucideIcon,
   Loader2,
   SquareDashedBottomCode,

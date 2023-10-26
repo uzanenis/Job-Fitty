@@ -3,12 +3,9 @@
 import { cn } from "@/lib/utils";
 import { DashoardNavProps } from "@/types";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Icons } from "./icons";
 
 const SidebarNav = ({ items }: { items: DashoardNavProps[] }) => {
-  const pathname = usePathname();
-
   if (!items?.length) return null;
 
   return (

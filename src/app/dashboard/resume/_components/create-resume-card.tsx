@@ -27,7 +27,7 @@ const UploadResumeCard = ({ userId }: { userId: string }) => {
         <CardContent>
           <DialogTrigger asChild>
             <Button className="w-full bg-green-600 rounded-full flex items-center justify-between text-white hover:bg-green-700">
-              Let's create a new one!
+              Let&rsquo;s create a new one!
               <MoveRight className="justify-self-center" size={24} />
             </Button>
           </DialogTrigger>

@@ -88,7 +88,7 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
             href="/dashboard/companyjobs/jobs"
             className={buttonVariants({ variant: "outline" })}
           >
-            Let's see your job posts
+            Let&rsquo;s see your job posts
           </Link>
         ),
       });
@@ -129,7 +129,7 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
             href="/dashboard/companyjobs/jobs"
             className={buttonVariants({ variant: "outline" })}
           >
-            Let's see your job posts
+            Let&rsquo;s see your job posts
           </Link>
         ),
       });

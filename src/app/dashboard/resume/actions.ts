@@ -54,7 +54,7 @@ export const deletePdfFile = safeAction(pdfSchema)(async (input) => {
   });
 
   const supabase = createServerComponentClient({ cookies });
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("resumes")
     .remove([user?.id + "/" + input.fileName + ".pdf"]);
 

@@ -11,11 +11,12 @@ const LandingPage = async () => {
       <LandingHero />
       <LandingTwoBoxes isSignedIn={user ? true : false} />
       <div className="flex flex-col justify-center items-center px-4 py-4">
-        <span>Let's contribute to this app!</span>
+        <span>Let&rsquo;s contribute to this app!</span>
         <a
           href="https://github.com/uzanenis/Job-Fitty"
           className="flex items-center mt-2 rounded-sm bg-gray-800 hover:bg-gray-700 transition-transform text-white px-2 py-2"
           target="_blank"
+          rel="noreferrer"
         >
           View on <Github className="ml-2" />
         </a>

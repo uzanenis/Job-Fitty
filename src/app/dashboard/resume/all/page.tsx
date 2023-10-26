@@ -25,7 +25,7 @@ const ResumeAllPage = async ({
     typeof sort === "string"
       ? (sort.split(".") as [
           keyof PdfFile | undefined,
-          "asc" | "desc" | undefined
+          "asc" | "desc" | undefined,
         ])
       : [];
   const sortBy = column === "createdAt" ? "createdAt" : (column as string);

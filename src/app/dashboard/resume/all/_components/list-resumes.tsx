@@ -38,6 +38,7 @@ import { useToast } from "@/components/ui/use-toast";
 const ListResumes = ({
   userId,
   resumes,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   pageCount,
 }: {
   userId: string;

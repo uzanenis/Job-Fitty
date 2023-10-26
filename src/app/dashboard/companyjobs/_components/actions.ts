@@ -11,6 +11,7 @@ const configuration = new Configuration({
   apiKey: env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+console.log(openai);
 
 export const createJob = safeAction(jobSchema)(async (input) => {
   const user = await getCurrentUser();

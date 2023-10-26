@@ -8,8 +8,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/ui/data-table";
@@ -18,7 +16,6 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Dialog } from "@radix-ui/react-dialog";
 import {
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -37,6 +34,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { deleteJob } from "../../_components/actions";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ListJobs = ({ jobs, pageCount }: { jobs: Job[]; pageCount: number }) => {
   const router = useRouter();
   const columns = useMemo<ColumnDef<Job, unknown>[]>(
