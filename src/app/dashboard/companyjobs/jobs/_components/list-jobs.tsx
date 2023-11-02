@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Job } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
@@ -37,6 +37,7 @@ import { deleteJob } from "../../_components/actions";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ListJobs = ({ jobs, pageCount }: { jobs: Job[]; pageCount: number }) => {
   const router = useRouter();
+
   const columns = useMemo<ColumnDef<Job, unknown>[]>(
     () => [
       {
@@ -86,77 +87,74 @@ const ListJobs = ({ jobs, pageCount }: { jobs: Job[]; pageCount: number }) => {
         cell: ({ row }) => {
           const data = row.original;
           return (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <Dialog>
+            <Dialog>
+              <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
                   <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                       Edit
                     </DropdownMenuItem>
                   </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <h2 className="text-3xl font-bold my-3">Update Job</h2>
-                    </DialogHeader>
-                    <CreateJobForm job={data} />
-                  </DialogContent>
-                </Dialog>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      Delete
-                    </DropdownMenuItem>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <h2 className="text-3xl font-bold my-3">
-                        Delete This Job
-                      </h2>
-                    </AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure you want to delete this job?
-                    </AlertDialogTitle>
-                    <Separator />
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      from your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel asChild>
-                        <Button variant="outline">Cancel</Button>
-                      </AlertDialogCancel>
-                      <AlertDialogAction asChild>
-                        <Button
-                          variant="destructive"
-                          onClick={async () => {
-                            await deleteJob(data.id);
-                            router.refresh();
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        Delete
+                      </DropdownMenuItem>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <h2 className="text-3xl font-bold my-3">
+                          Delete This Job
+                        </h2>
+                      </AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to delete this job?
+                      </AlertDialogTitle>
+                      <Separator />
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete from your account and remove your data from our
+                        servers.
+                      </AlertDialogDescription>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </AlertDialogCancel>
+                        <AlertDialogAction asChild>
+                          <Button
+                            variant="destructive"
+                            onClick={async () => {
+                              await deleteJob(data.id);
+                              router.refresh();
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DialogContent>
+                <DialogHeader>
+                  <h2 className="text-3xl font-bold my-3">Update Job</h2>
+                </DialogHeader>
+                <CreateJobForm job={data} />
+              </DialogContent>
+            </Dialog>
           );
         },
       },
     ],
     []
   );
-
-  useEffect(() => {
-    router.refresh();
-  }, []);
 
   return (
     <>

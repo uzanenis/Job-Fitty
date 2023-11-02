@@ -29,7 +29,7 @@ export default function RootLayout({
       >
         <ContextProvider>
           <Header />
-          <div className="">{children}</div>
+          {children}
           <Toaster />
         </ContextProvider>
       </body>

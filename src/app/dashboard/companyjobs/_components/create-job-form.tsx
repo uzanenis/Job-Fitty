@@ -28,6 +28,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Job } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const formDataSchema = z.object({
   title: z.string().min(1),
@@ -46,6 +47,7 @@ interface CreateJobFormProps {
 }
 
 const CreateJobForm = ({ job }: CreateJobFormProps) => {
+  const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const isCreateMode = !job;
@@ -151,7 +153,9 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
     if (isCreateMode) {
       await createNewJob(data);
     } else {
-      await updateJob(data);
+      await updateJob(data).then(() => {
+        router.refresh();
+      });
     }
   }
 
