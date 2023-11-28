@@ -43,6 +43,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   );
+  console.log("client");
   const cdnUrl = `https://tkefcayfqqsgntdcklpy.supabase.co/storage/v1/object/public/resumes/${userId}/`;
   const { toast } = useToast();
 
