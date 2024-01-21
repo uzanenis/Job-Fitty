@@ -6,6 +6,7 @@ import { Combobox, Transition } from "@headlessui/react";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useStore } from "@/store";
 import { Button } from "@/components/ui/button";
+import { createJobCandidateScore } from "./actions";
 
 interface StateSelectorProps {
   jobs: Job[];
@@ -34,12 +35,22 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
       .includes(query.toLowerCase().replace(/\s+/g, ""));
   });
 
-  const handleStartAnalyze = () => {
+  const handleStartAnalyze = async () => {
     setLoading(true);
     if (selectedJob && selectedPdfFiles.length > 0) {
       setStoreSelectedJob(selectedJob);
       const selectedPdfFilesIds = selectedPdfFiles.map((pdfFile) => pdfFile.id);
       setStoreSelectedPdfFiles(selectedPdfFilesIds);
+      console.log(selectedPdfFilesIds);
+      const responseData = await createJobCandidateScore({
+        job: selectedJob,
+        pdfFiles: selectedPdfFilesIds,
+      });
+      console.table("reponseData", responseData);
+      //TODO: redirect to analyze page
+      // if (responseData === 200) {
+      //   router.push(`/dashboard/analyze/${responseData.id}`);
+      // }
     }
     setLoading(false);
   };

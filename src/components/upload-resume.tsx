@@ -43,8 +43,9 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   );
-  console.log("client");
-  const cdnUrl = `https://tkefcayfqqsgntdcklpy.supabase.co/storage/v1/object/public/resumes/${userId}/`;
+
+  const cdnUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resumes/${userId}/`;
+
   const { toast } = useToast();
 
   const form = useForm<FormData>({
@@ -90,7 +91,6 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
         fileText: text,
       };
       await createPdfFile(data);
-      console.log(text);
     };
     fileReader.readAsArrayBuffer(file);
   };

@@ -3,15 +3,7 @@
 import { safeAction } from "@/lib/actions";
 import { getCurrentUser } from "@/lib/session";
 import { jobSchema } from "@/lib/validations/jobs";
-import { Configuration, OpenAIApi } from "openai";
 import { prisma } from "@/lib/prisma";
-import { env } from "@/env.mjs";
-
-const configuration = new Configuration({
-  apiKey: env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-console.log(openai);
 
 export const createJob = safeAction(jobSchema)(async (input) => {
   const user = await getCurrentUser();

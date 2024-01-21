@@ -77,6 +77,11 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
         position: data.position,
         technologies: data.technologies.split(","),
         workType: data.workType,
+        salaryMin: null,
+        salaryMax: null,
+        educationLevel: "",
+        languageRequirement: "",
+        additionalInfo: "",
       });
 
       console.table(responseData);
@@ -118,6 +123,11 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
         position: data.position,
         technologies: data.technologies.split(","),
         workType: data.workType,
+        salaryMin: null,
+        salaryMax: null,
+        educationLevel: "",
+        languageRequirement: "",
+        additionalInfo: "",
       });
 
       console.table(responseData);
