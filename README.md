@@ -28,7 +28,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] CRUD on list
 - [x] Clear file input after submit resume
 - [x] Select pdf and analyze by job posting
-- [ ] Analyze resume with OpenAI
+- [x] Analyze resume with OpenAI
+- [ ] Refactor upload resume(dropzone, progress, uploadthing)
 - [ ] Footer
 - [ ] Summary page(How many application reviewed? etc..)
 - [x] Landing page
