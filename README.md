@@ -1,20 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project.
+<a href="https://job-fitty.vercel.app/">
+  <h1 align="center">Job Fitty</h1>
+</a>
 
-## Getting Started
+Create your job post, upload candidates resumes and get your AI-powered candidate score!
 
-First, run the development server:
+This is actually my learning and portfolio project
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+## Local Development
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+  git clone https://github.com/uzanenis/Job-Fitty.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-## TODO
+```bash
+  cd ai-interview
+```
+
+Copy envoriments and edit it
+
+```bash
+  cp .env.example .env
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the local server
+
+```bash
+  npm run dev
+```
+
+## Tech Stack
+
+Next.js [App Router](https://nextjs.org/docs/app) for the frontend
+
+[Prisma](https://www.prisma.io/) for ORM
+
+[Supabase](https://supabase.com/) for database
+
+[Shadcn](https://ui.shadcn.com/) for the components
+
+[Tailwind CSS](https://tailwindcss.com/) for the styling
+
+[Zustand](https://github.com/pmndrs/zustand) for store
+
+[Vercel](https://vercel.com/) for deploy
+
+## Deploy Your Own
+
+You can deploy this project by setting up some requirements
+
+1. run `npm install` first
+2. copy envoriment variables `cp .env.example .env`
+3. edit and save your envoriments.
+4. `npm run build` and you can deploy anywhere. (Can be dockerize)
+
+##
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+
+## Roadmap
 
 - [x] Preview uploaded pdfs.
 - [x] List resume when uploaded
@@ -29,10 +84,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [x] Clear file input after submit resume
 - [x] Select pdf and analyze by job posting
 - [x] Analyze resume with OpenAI
+- [ ] Show analyze result
 - [ ] Refactor upload resume(dropzone, progress, uploadthing)
 - [ ] Footer
 - [ ] Summary page(How many application reviewed? etc..)
-- [x] Landing page
+- [ ] Landing page
 - [ ] Contact page
 - [ ] Pricing page
 - [ ] About page
