@@ -6,7 +6,12 @@ Create your job post, upload candidates resumes and get your AI-powered candidat
 
 This is actually my learning and portfolio project
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Screenshot 2024-03-09 at 19 59 33](https://github.com/uzanenis/Job-Fitty/assets/73305571/f2272d8d-171f-4e61-87c7-03e10bf8547b)
+
+![Screenshot 2024-03-09 at 20 29 05](https://github.com/uzanenis/Job-Fitty/assets/73305571/696d06e0-8ea3-49d9-9e12-a1c774ed1ac5)
+
+![Screenshot 2024-03-09 at 20 29 36](https://github.com/uzanenis/Job-Fitty/assets/73305571/036a9eee-7d47-4ce6-9f09-d4f1349f12b9)
+
 
 ## Local Development
 
