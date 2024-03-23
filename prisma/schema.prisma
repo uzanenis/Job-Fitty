@@ -72,13 +72,14 @@ model VerificationToken {
 }
 
 model PdfFile {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  fileName  String
-  fileUrl   String
-  fileText  String
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  fileName      String
+  fileUrl       String
+  fileText      String
+  candidateName String
+  userId        String
+  User          User     @relation(fields: [userId], references: [id])
 
   @@map("pdf_files")
 }
@@ -107,14 +108,15 @@ model Job {
 
 // write a model for created candidates scores
 model CandidateScore {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  score     Int
-  jobId     String
-  userId    String
-  feedback  String?
-  job       Job      @relation(fields: [jobId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  score         String
+  jobId         String
+  userId        String
+  response      String?
+  candidateName String?
+  job           Job      @relation(fields: [jobId], references: [id])
+  user          User     @relation(fields: [userId], references: [id])
 
   @@map("candidate_scores")
 }
