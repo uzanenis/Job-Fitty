@@ -15,7 +15,7 @@ export default function ListScores({
 }) {
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-4 px-4 py-2">
+      <div className="grid md:grid-cols-2 gap-4 py-4">
         {candidateScores.map((score) => (
           <Link
             href={`/dashboard/scores/${score.id}`}

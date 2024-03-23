@@ -8,6 +8,7 @@ import { useStore } from "@/store";
 import { Button } from "@/components/ui/button";
 import { createJobCandidateScore } from "./actions";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface StateSelectorProps {
   jobs: Job[];
@@ -24,6 +25,7 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
   const [selectedPdfFiles, setSelectedPdfFiles] = useState<PdfFile[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const hasOpenAiKey = process.env.OPENAI_API_KEY ? true : false;
   const filteredJobs = jobs.filter((job) => {
     return job.title
       .toLowerCase()
@@ -220,6 +222,12 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
           "Start Analyze"
         )}
       </Button>
+      {loading && !hasOpenAiKey && (
+        <p className="text-red-500 text-sm mt-2">
+          You need to set OPENAI_API_KEY in .env to start analyze.
+          <Link href="mailto:uzanenis@outlook.com">Or contact me</Link>
+        </p>
+      )}
     </div>
   );
 };

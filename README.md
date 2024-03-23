@@ -4,7 +4,9 @@
 
 Create your job post, upload candidates resumes and get your AI-powered candidate score!
 
-This is actually my learning and portfolio project
+This is actually my learning and portfolio project.
+
+Keep in mind that the project is not yet complete and has shortcomings. You can contribute for the missing parts.
 
 ![Screenshot 2024-03-09 at 19 59 33](https://github.com/uzanenis/Job-Fitty/assets/73305571/f2272d8d-171f-4e61-87c7-03e10bf8547b)
 

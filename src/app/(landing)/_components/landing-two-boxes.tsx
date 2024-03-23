@@ -12,7 +12,7 @@ const LandingTwoBoxes = ({ isSignedIn }: { isSignedIn: boolean }) => {
         </div>
         <div className="flex justify-center items-center mt-4">
           {isSignedIn ? (
-            <Link href="/dashboard/scores">
+            <Link href="/dashboard/resume">
               <Button className="bg-gradient-to-r from-indigo-400 to-purple-600 text-white">
                 Go to Dashboard
               </Button>

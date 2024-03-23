@@ -33,7 +33,7 @@ export const siteConfig = {
     const items = [
       {
         title: "Resumes",
-        href: "/dashboard/resumes",
+        href: "/dashboard/resume",
       },
       {
         title: "Analyze Candidate",
@@ -41,7 +41,7 @@ export const siteConfig = {
       },
       {
         title: "Company Jobs",
-        href: "/dashboard/jobs",
+        href: "/dashboard/companyjobs",
       },
       {
         title: "Scores",

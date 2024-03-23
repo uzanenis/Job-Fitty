@@ -56,7 +56,7 @@ export default async function DashboardLayout({
           </div>
         </ScrollArea>
       </aside>
-      <main className="flex w-full flex-col overflow-hidden pt-4">
+      <main className="flex w-full flex-col overflow-hidden pt-4 container">
         {children}
       </main>
     </div>

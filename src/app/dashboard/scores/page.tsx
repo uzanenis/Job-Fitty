@@ -11,7 +11,15 @@ export default async function ScoresPage() {
 
   return (
     <section>
-      <ListScores candidateScores={candidateScores} />
+      {candidateScores.length === 0 ? (
+        <div className="flex flex-col items-center justify-center h-[calc(100vh-3.5rem)]">
+          <p className="text-center text-lg font-semibold text-slate-500">
+            No candidate scores available.
+          </p>
+        </div>
+      ) : (
+        <ListScores candidateScores={candidateScores} />
+      )}
     </section>
   );
 }
