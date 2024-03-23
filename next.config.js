@@ -2,7 +2,7 @@
 /*eslint-env node*/
 const nextConfig = {
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["lh3.googleusercontent.com", "cdn.buymeacoffee.com"],
   },
   experimental: {
     serverActions: true,
