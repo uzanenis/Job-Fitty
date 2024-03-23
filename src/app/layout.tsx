@@ -6,6 +6,7 @@ import { ContextProvider } from "@/components/context-provider";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import NextTopLoader from "nextjs-toploader";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         <ContextProvider>
           <NextTopLoader color="#4c92f8" showSpinner={false} />
           {children}
+          <Analytics />
           <Toaster />
         </ContextProvider>
       </body>
