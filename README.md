@@ -12,7 +12,6 @@ This is actually my learning and portfolio project
 
 ![Screenshot 2024-03-09 at 20 29 36](https://github.com/uzanenis/Job-Fitty/assets/73305571/036a9eee-7d47-4ce6-9f09-d4f1349f12b9)
 
-
 ## Local Development
 
 Clone the project
