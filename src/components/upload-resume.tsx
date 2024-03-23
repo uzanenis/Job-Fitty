@@ -29,16 +29,21 @@ import { PdfFile } from "@prisma/client";
 interface UploadResumeProps {
   userId: string;
   currentResume?: PdfFile;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const formDataSchema = z.object({
-  candidateName: z.string().optional(),
+  candidateName: z.string(),
   resume: z.any(),
 });
 
 type FormData = z.infer<typeof formDataSchema>;
 
-const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
+const UploadResume = ({
+  userId,
+  currentResume,
+  setOpen,
+}: UploadResumeProps) => {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
@@ -52,7 +57,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
     resolver: zodResolver(formDataSchema),
     mode: "onSubmit",
     defaultValues: {
-      candidateName: currentResume?.fileName || "",
+      candidateName: currentResume?.candidateName || "",
       resume: null,
     },
   });
@@ -60,7 +65,12 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const pdfToText = async (file: File, url: string, fileName: string) => {
+  const pdfToText = async (
+    file: File,
+    url: string,
+    fileName: string,
+    name: string
+  ) => {
     const fileReader = new FileReader();
     fileReader.onload = async () => {
       const typedarray = new Uint8Array(fileReader.result as ArrayBuffer);
@@ -89,8 +99,10 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
         fileName,
         fileUrl: url,
         fileText: text,
+        candidateName: name,
+        userId,
       };
-      await createPdfFile(data);
+      await createPdfFile(data).then(() => setOpen(false));
     };
     fileReader.readAsArrayBuffer(file);
   };
@@ -119,13 +131,13 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
       } else {
         setFile(null);
         const url = cdnUrl + fileNameTemp + ".pdf";
-        await pdfToText(file, url, fileNameTemp);
+        await pdfToText(file, url, fileNameTemp, data.candidateName);
         toast({
           title: "Success!",
           description: "Analyze It",
           action: (
             <Link
-              href="/dashboard/resume"
+              href="/dashboard/analyze"
               className={buttonVariants({ variant: "outline" })}
             >
               Analyze Resume
@@ -158,7 +170,7 @@ const UploadResume = ({ userId, currentResume }: UploadResumeProps) => {
             control={form.control}
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Candidate Name (optional)</FormLabel>
+                <FormLabel>Candidate Name</FormLabel>
                 <Input {...field} placeholder="Candidate Name" />
                 <FormMessage />
               </FormItem>
