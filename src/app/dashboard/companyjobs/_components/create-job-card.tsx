@@ -9,10 +9,12 @@ import {
 } from "@/components/ui/dialog";
 import { MoveRight, PlusSquare } from "lucide-react";
 import CreateJobForm from "./create-job-form";
+import { useState } from "react";
 
 const CreateJobCard = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <Card className="flex flex-col border-2 border-slate-300">
         <CardHeader>
           <div className="flex items-center">
@@ -34,7 +36,7 @@ const CreateJobCard = () => {
         <DialogHeader>
           <h2 className="text-3xl font-bold my-3">Create a job</h2>
         </DialogHeader>
-        <CreateJobForm />
+        <CreateJobForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

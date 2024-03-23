@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { PdfFile } from "@prisma/client";
 import { DataTable } from "@/components/ui/data-table";
@@ -47,6 +47,8 @@ const ListResumes = ({
 }) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  console.log(resumes);
 
   const columns = useMemo<ColumnDef<PdfFile, unknown>[]>(
     () => [
@@ -79,7 +81,6 @@ const ListResumes = ({
         header: "Actions",
         cell: ({ row }) => {
           const data = row.original;
-
           return (
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -89,7 +90,7 @@ const ListResumes = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                       Edit
@@ -99,7 +100,11 @@ const ListResumes = ({
                     <DialogHeader>
                       <h2 className="text-3xl font-bold my-3">Update Job</h2>
                     </DialogHeader>
-                    <UploadResume userId={userId} currentResume={data} />
+                    <UploadResume
+                      userId={userId}
+                      currentResume={data}
+                      setOpen={setOpen}
+                    />
                   </DialogContent>
                 </Dialog>
                 <AlertDialog>
@@ -145,7 +150,7 @@ const ListResumes = ({
         },
       },
     ],
-    []
+    [resumes]
   );
 
   const deletePdfFileFunction = async (data: PdfFile) => {
@@ -166,10 +171,6 @@ const ListResumes = ({
     }
     router.refresh();
   };
-
-  useEffect(() => {
-    router.refresh();
-  }, []);
   return (
     <>
       <DataTable columns={columns} data={resumes} />

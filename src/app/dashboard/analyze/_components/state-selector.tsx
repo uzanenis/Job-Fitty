@@ -7,6 +7,7 @@ import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useStore } from "@/store";
 import { Button } from "@/components/ui/button";
 import { createJobCandidateScore } from "./actions";
+import { useRouter } from "next/navigation";
 
 interface StateSelectorProps {
   jobs: Job[];
@@ -16,6 +17,8 @@ interface StateSelectorProps {
 const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
   const setStoreSelectedJob = useStore((state) => state.setJob);
   const setStoreSelectedPdfFiles = useStore((state) => state.setPdfFileIds);
+
+  const router = useRouter();
 
   const [selectedJob, setSelectedJob] = useState<Job>();
   const [selectedPdfFiles, setSelectedPdfFiles] = useState<PdfFile[]>([]);
@@ -48,160 +51,161 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
       });
       console.table("reponseData", responseData);
       //TODO: redirect to analyze page
-      // if (responseData === 200) {
-      //   router.push(`/dashboard/analyze/${responseData.id}`);
-      // }
+      if (responseData.status === 200) {
+        router.push(`/dashboard/scores`);
+      }
     }
     setLoading(false);
   };
 
   return (
-    <div>
-      <h2>Select Company Job and Candidate Resumes</h2>
-      <Combobox value={selectedJob} onChange={setSelectedJob}>
-        <div className="relative mt-1">
-          <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-            <Combobox.Input
-              className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 bg-white text-black focus:ring-0"
-              displayValue={(job: Job) => job.title}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronsUpDown
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </Combobox.Button>
-          </div>
-          <Transition
-            as={Fragment}
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-            afterLeave={() => setQuery("")}
-          >
-            <Combobox.Options className="mt-1 h-full w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {filteredJobs.length === 0 && query !== "" ? (
-                <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                  Nothing found.
-                </div>
-              ) : (
-                filteredJobs.map((job) => (
-                  <Combobox.Option
-                    key={job.id}
-                    className={({ active }) =>
-                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active ? "bg-blue-600 text-white" : "text-gray-900"
-                      }`
-                    }
-                    value={job}
-                  >
-                    {({ selected, active }) => (
-                      <>
-                        <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
-                        >
-                          {job.title}
-                        </span>
-                        {selected ? (
-                          <span
-                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                              active ? "text-white" : "text-blue-600"
-                            }`}
-                          >
-                            <Check className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Combobox.Option>
-                ))
-              )}
-            </Combobox.Options>
-          </Transition>
-        </div>
-      </Combobox>
-
-      <div className="mt-4">
-        <h3>Select the resumes you want to analyze</h3>
-        <Combobox
-          value={selectedPdfFiles}
-          onChange={(v) => setSelectedPdfFiles(v)}
-          multiple
-        >
-          <div className="relative mt-1">
-            {selectedPdfFiles.length > 0 && (
-              <span className="block mt-1 text-sm text-gray-700">
-                {selectedPdfFiles.length} files selected
-              </span>
-            )}
-            <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-              <Combobox.Input
-                className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 bg-white text-black  focus:ring-0"
-                displayValue={(pdfFiles: PdfFile[]) =>
-                  pdfFiles.map((file) => file.fileName).join(", ")
-                }
-                onChange={(event) => setQuery(event.target.value)}
-              />
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                <ChevronsUpDown
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
+    <div className="h-full w-full">
+      <div className="grid md:grid-cols-2 gap-4">
+        <div className="w-full h-full">
+          <h2>Select Company Job and Candidate Resumes</h2>
+          <Combobox value={selectedJob} onChange={setSelectedJob}>
+            <div className="relative mt-1">
+              <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+                <Combobox.Input
+                  className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 bg-white text-black focus:ring-0"
+                  displayValue={(job: Job) => job.title}
+                  onChange={(event) => setQuery(event.target.value)}
                 />
-              </Combobox.Button>
-            </div>
-            <Transition
-              as={Fragment}
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-              afterLeave={() => setQuery("")}
-            >
-              <Combobox.Options className="mt-1 h-full w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {filteredPdfFiles.length === 0 && query !== "" ? (
-                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                    Nothing found.
-                  </div>
-                ) : (
-                  filteredPdfFiles.map((pdfFile) => (
-                    <Combobox.Option
-                      key={pdfFile.id}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-blue-600 text-white" : "text-gray-900"
-                        }`
-                      }
-                      value={pdfFile}
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
-                            }`}
-                          >
-                            {pdfFile.fileName}
-                          </span>
-                          {selected ? (
+                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                  <ChevronsUpDown
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+                afterLeave={() => setQuery("")}
+              >
+                <Combobox.Options className="mt-1 h-full w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  {filteredJobs.length === 0 && query !== "" ? (
+                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                      Nothing found.
+                    </div>
+                  ) : (
+                    filteredJobs.map((job) => (
+                      <Combobox.Option
+                        key={job.id}
+                        className={({ active }) =>
+                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                            active ? "bg-blue-600 text-white" : "text-gray-900"
+                          }`
+                        }
+                        value={job}
+                      >
+                        {({ selected, active }) => (
+                          <>
                             <span
-                              className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                active ? "text-white" : "text-blue-600"
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
                               }`}
                             >
-                              <Check className="h-5 w-5" aria-hidden="true" />
+                              {job.title}
                             </span>
-                          ) : null}
-                        </>
-                      )}
-                    </Combobox.Option>
-                  ))
-                )}
-              </Combobox.Options>
-            </Transition>
-          </div>
-        </Combobox>
+                            {selected ? (
+                              <span
+                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                  active ? "text-white" : "text-blue-600"
+                                }`}
+                              >
+                                <Check className="h-5 w-5" aria-hidden="true" />
+                              </span>
+                            ) : null}
+                          </>
+                        )}
+                      </Combobox.Option>
+                    ))
+                  )}
+                </Combobox.Options>
+              </Transition>
+            </div>
+          </Combobox>
+        </div>
+
+        <div className="w-full h-full">
+          <h3>Select the resumes you want to analyze</h3>
+          <Combobox
+            value={selectedPdfFiles}
+            onChange={(v) => setSelectedPdfFiles(v)}
+          >
+            <div className="relative mt-1">
+              <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+                <Combobox.Input
+                  className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 bg-white text-black  focus:ring-0"
+                  displayValue={(pdfFile: PdfFile) => pdfFile.fileName}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                  <ChevronsUpDown
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+                afterLeave={() => setQuery("")}
+              >
+                <Combobox.Options className="mt-1 h-full w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  {filteredPdfFiles.length === 0 && query !== "" ? (
+                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                      Nothing found.
+                    </div>
+                  ) : (
+                    filteredPdfFiles.map((pdfFile) => (
+                      <Combobox.Option
+                        key={pdfFile.id}
+                        className={({ active }) =>
+                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                            active ? "bg-blue-600 text-white" : "text-gray-900"
+                          }`
+                        }
+                        value={pdfFile}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            <span
+                              className={`block truncate ${
+                                selected ? "font-medium" : "font-normal"
+                              }`}
+                            >
+                              {pdfFile.fileName}
+                            </span>
+                            {selected ? (
+                              <span
+                                className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                  active ? "text-white" : "text-blue-600"
+                                }`}
+                              >
+                                <Check className="h-5 w-5" aria-hidden="true" />
+                              </span>
+                            ) : null}
+                          </>
+                        )}
+                      </Combobox.Option>
+                    ))
+                  )}
+                </Combobox.Options>
+              </Transition>
+            </div>
+          </Combobox>
+          {selectedPdfFiles.length > 0 && (
+            <span className="block mt-1 text-sm text-gray-700">
+              {selectedPdfFiles.length} files selected
+            </span>
+          )}
+        </div>
       </div>
       <Button
         onClick={handleStartAnalyze}

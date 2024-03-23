@@ -33,6 +33,9 @@ import {
   MonitorPlay,
   Building2,
   BrainCog,
+  FileDigit,
+  BadgeCheck,
+  BadgeX,
 } from "lucide-react";
 
 import Image from "next/image";
@@ -85,6 +88,9 @@ export const Icons = {
   monitorPlay: MonitorPlay,
   building: Building2,
   brain: BrainCog,
+  fileDigit: FileDigit,
+  badgeCheck: BadgeCheck,
+  badgeX: BadgeX,
   raceCar: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

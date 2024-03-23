@@ -1,10 +1,11 @@
 import "./globals.css";
+import "react-circular-progressbar/dist/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ContextProvider } from "@/components/context-provider";
-import Header from "@/components/header";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,12 +24,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen flex flex-col bg-background",
+          "min-h-screen flex flex-col bg-background antialiased",
           inter.className
         )}
       >
         <ContextProvider>
-          <Header />
+          <NextTopLoader color="#4c92f8" showSpinner={false} />
           {children}
           <Toaster />
         </ContextProvider>

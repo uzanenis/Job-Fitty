@@ -5,4 +5,6 @@ export const pdfSchema = z.object({
   fileName: z.string().nonempty(),
   fileUrl: z.string().url(),
   fileText: z.string().nonempty(),
+  candidateName: z.string(),
+  userId: z.string(),
 });

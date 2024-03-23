@@ -23,9 +23,39 @@ export const siteConfig = {
     if (isLoggedIn) {
       items.push({
         title: "Dashboard",
-        href: "/dashboard",
+        href: "/dashboard/scores",
       });
     }
+
+    return items;
+  },
+  getDashboardLinks: () => {
+    const items = [
+      {
+        title: "Resumes",
+        href: "/dashboard/resumes",
+      },
+      {
+        title: "Analyze Candidate",
+        href: "/dashboard/analyze",
+      },
+      {
+        title: "Company Jobs",
+        href: "/dashboard/jobs",
+      },
+      {
+        title: "Scores",
+        href: "/dashboard/scores",
+      },
+      {
+        title: "Statistics (Coming Soon)",
+        href: "/dashboard/statistics",
+      },
+      {
+        title: "Upload Meets(Coming Soon)",
+        href: "/dashboard/meets",
+      },
+    ];
 
     return items;
   },

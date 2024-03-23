@@ -44,9 +44,10 @@ type FormData = z.infer<typeof formDataSchema>;
 
 interface CreateJobFormProps {
   job?: Job;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateJobForm = ({ job }: CreateJobFormProps) => {
+const CreateJobForm = ({ job, setOpen }: CreateJobFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -101,6 +102,8 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
       });
 
       form.reset();
+      if (setOpen) setOpen(false);
+      router.refresh();
     } catch (err) {
       console.error(err);
       toast({
@@ -161,7 +164,10 @@ const CreateJobForm = ({ job }: CreateJobFormProps) => {
 
   async function onSubmit(data: FormData) {
     if (isCreateMode) {
-      await createNewJob(data);
+      await createNewJob(data).then(() => {
+        if (setOpen) setOpen(false);
+        router.refresh();
+      });
     } else {
       await updateJob(data).then(() => {
         router.refresh();

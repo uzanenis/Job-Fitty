@@ -18,12 +18,17 @@ export const dashboardConfig = {
       icon: "building",
     },
     {
-      title: "Statistics",
+      title: "Candidate Scores",
+      href: "/dashboard/scores",
+      icon: "fileDigit",
+    },
+    {
+      title: "Statistics (Soon)",
       href: "/dashboard/statistics",
       icon: "lineChart",
     },
     {
-      title: "Upload Meeting(Soon)",
+      title: "Upload Meeting (Soon)",
       href: "/dashboard/meeting",
       icon: "monitorPlay",
     },

@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import UploadResume from "@/components/upload-resume";
 import { MoveRight, Upload } from "lucide-react";
+import { useState } from "react";
 
 const UploadResumeCard = ({ userId }: { userId: string }) => {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <Card className="flex flex-col border-2 border-slate-300">
         <CardHeader>
           <div className="flex items-center">
@@ -37,7 +39,7 @@ const UploadResumeCard = ({ userId }: { userId: string }) => {
         <DialogHeader>
           <h2 className="text-3xl font-bold my-3">Create a job</h2>
         </DialogHeader>
-        <UploadResume userId={userId} />
+        <UploadResume userId={userId} setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

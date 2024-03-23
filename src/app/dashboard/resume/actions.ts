@@ -8,14 +8,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export const createPdfFile = safeAction(pdfSchema)(async (input) => {
-  const user = await getCurrentUser();
-  if (!user) {
-    throw new Error("You must be logged in to create a job.");
-  }
-
   await prisma.pdfFile.create({
     data: {
-      userId: user?.id,
       ...input,
     },
   });

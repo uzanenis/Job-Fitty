@@ -58,7 +58,7 @@ const AccountMenu = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link href="/dashboard" className="flex items-center gap-1">
+          <Link href="/dashboard/scores" className="flex items-center gap-1">
             <Icons.lineChart className="w-4 h-4 mr-2" />
             <span>Dashboard</span>
           </Link>
