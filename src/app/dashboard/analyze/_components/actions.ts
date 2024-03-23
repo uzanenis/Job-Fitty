@@ -28,6 +28,14 @@ export const createJobCandidateScore = validatedCallback({
       },
     });
 
+    const cleanedText = pdfFiles!.fileText
+      .replace(/[^\w\s]|_/g, "")
+      .replace(/\s+/g, " ");
+
+    const cleanedJob = JSON.stringify(input.job)
+      .replace(/[^\w\s]|_/g, "")
+      .replace(/\s+/g, " ");
+
     if (env.OPENAI_API_KEY && pdfFiles) {
       try {
         const candidateScoreResponse = await openai.createChatCompletion({
@@ -40,12 +48,8 @@ export const createJobCandidateScore = validatedCallback({
             },
             {
               role: "user",
-              content: `Can you produce a score in % of positive, negative outputs and feedbacks about the compatibility of the job candidate with the job advertisement? Lastly, can you format the response as JSON with the 2 properties names candidateScore and candidateFeedback. Job candidate's resume: ${
-                pdfFiles!.fileText
-              }
-              Requirements and details of the job advertisement: ${JSON.stringify(
-                input.job
-              )}`,
+              content: `Can you produce a score in % and strengths and weaknesses about the compatibility of the job candidate with the job advertisement? Lastly, can you format the response as JSON with the 2 properties names candidateScore, candidateStrength and candidateWeakness. Job candidate's resume: ${cleanedText}
+              Requirements and details of the job advertisement: ${cleanedJob}`,
             },
           ],
         });
@@ -53,11 +57,23 @@ export const createJobCandidateScore = validatedCallback({
         const responseText =
           candidateScoreResponse.data.choices[0].message?.content;
         const response = JSON.parse(responseText ?? "");
-        console.log("response", response);
+
+        if (response) {
+          await prisma.candidateScore.create({
+            data: {
+              jobId: input.job.id!,
+              userId: user.id,
+              score: response.candidateScore,
+              response: JSON.stringify(response),
+              candidateName: pdfFiles.candidateName,
+            },
+          });
+        }
 
         return { message: "candidate score created", status: 200 };
       } catch (error) {
         console.error(error);
+        return { message: error, status: 500 };
       }
     }
   },
