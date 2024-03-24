@@ -25,7 +25,8 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
   const [selectedPdfFiles, setSelectedPdfFiles] = useState<PdfFile[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const hasOpenAiKey = process.env.OPENAI_API_KEY ? true : false;
+  const hasOpenAiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY ? true : false;
+
   const filteredJobs = jobs.filter((job) => {
     return job.title
       .toLowerCase()
@@ -211,7 +212,9 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
       </div>
       <Button
         onClick={handleStartAnalyze}
-        disabled={!selectedJob || selectedPdfFiles.length === 0}
+        disabled={
+          !selectedJob || selectedPdfFiles.length === 0 || !hasOpenAiKey
+        }
         className="w-fit text-accent mt-2"
       >
         {loading ? (
@@ -222,10 +225,13 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
           "Start Analyze"
         )}
       </Button>
-      {loading && !hasOpenAiKey && (
+      {!hasOpenAiKey && (
         <p className="text-red-500 text-sm mt-2">
-          You need to set OPENAI_API_KEY in .env to start analyze.
-          <Link href="mailto:uzanenis@outlook.com">Or contact me</Link>
+          You need to set NEXT_PUBLIC_OPENAI_API_KEY in .env to start analyze.{" "}
+          <br />
+          <Link href="mailto:uzanenis@outlook.com" className="underline">
+            Or you can contact me
+          </Link>
         </p>
       )}
     </div>

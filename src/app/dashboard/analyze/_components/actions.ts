@@ -7,7 +7,7 @@ import { analyzeSchema } from "@/lib/validations/analyze";
 import { getCurrentUser } from "@/lib/session";
 
 const configuration = new Configuration({
-  apiKey: env.OPENAI_API_KEY,
+  apiKey: env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -36,7 +36,7 @@ export const createJobCandidateScore = validatedCallback({
       .replace(/[^\w\s]|_/g, "")
       .replace(/\s+/g, " ");
 
-    if (env.OPENAI_API_KEY && pdfFiles) {
+    if (env.NEXT_PUBLIC_OPENAI_API_KEY && pdfFiles) {
       try {
         const candidateScoreResponse = await openai.createChatCompletion({
           model: "gpt-3.5-turbo",
@@ -57,6 +57,22 @@ export const createJobCandidateScore = validatedCallback({
         const responseText =
           candidateScoreResponse.data.choices[0].message?.content;
         const response = JSON.parse(responseText ?? "");
+
+        // const response = {
+        //   candidateScore: "80%",
+        //   candidateStrength: [
+        //     "Strong experience in various Frontend technologies such as React, Nextjs, Redux, and JavaScript",
+        //     "Experience in architecting component libraries and building reusable UI components",
+        //     "Proficiency in REST API integration and services",
+        //     "Engagement in open source projects showcases enthusiasm and continuous learning attitude",
+        //   ],
+        //   candidateWeakness: [
+        //     "Limited experience with the specific technologies mentioned in the job advertisement like Redux Saga",
+        //     "Less clarity on experience with HTML and CSS mentioned in the job requirements",
+        //     "No explicit mention of experience in building RESTful APIs",
+        //     "Lack of details on hands-on programming experience with CSS",
+        //   ],
+        // };
 
         if (response) {
           await prisma.candidateScore.create({

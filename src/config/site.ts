@@ -23,7 +23,7 @@ export const siteConfig = {
     if (isLoggedIn) {
       items.push({
         title: "Dashboard",
-        href: "/dashboard/scores",
+        href: "/dashboard/resume",
       });
     }
 
