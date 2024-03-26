@@ -6,18 +6,18 @@ export const siteConfig = {
     "Smart Hiring Starts Here: Empower Your Decisions with AI Insights.",
   getHeaderLinks: (isLoggedIn: boolean) => {
     const items = [
-      {
-        title: "About",
-        href: "/about",
-      },
-      {
-        title: "Contact",
-        href: "/contact",
-      },
-      {
-        title: "Pricing",
-        href: "/pricing",
-      },
+      // {
+      //   title: "About",
+      //   href: "/about",
+      // },
+      // {
+      //   title: "Contact",
+      //   href: "/contact",
+      // },
+      // {
+      //   title: "Pricing",
+      //   href: "/pricing",
+      // },
     ];
 
     if (isLoggedIn) {

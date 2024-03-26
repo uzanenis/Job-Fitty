@@ -14,6 +14,35 @@ export const metadata: Metadata = {
   title: "Job Fitty",
   description:
     "Smart Hiring Starts Here: Empower Your Decisions with AI Insights.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://jobfitty.com",
+    siteName: "Job Fitty",
+    images: [
+      {
+        url: "https://jobfitty.com/job-fitty-banner.png",
+        width: 1200,
+        height: 630,
+        alt: "Job Fitty",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Job Fitty",
+    description:
+      "Smart Hiring Starts Here: Empower Your Decisions with AI Insights.",
+    creator: "@uzanenis",
+    images: [
+      {
+        url: "https://jobfitty.com/job-fitty-banner.png",
+        alt: "Job Fitty",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
