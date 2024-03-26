@@ -15,11 +15,11 @@ const scoreColor = (score: number) => {
 export default function ScoreCircular({ score }: { score: any }) {
   return (
     <CircularProgressbar
-      value={Number(score.score.slice(1))}
-      text={score.score}
+      value={Number(score.score)}
+      text={`${score.score}%`}
       styles={buildStyles({
-        pathColor: scoreColor(Number(score.score.slice(1))),
-        textColor: scoreColor(Number(score.score.slice(1))),
+        pathColor: scoreColor(Number(score.score)),
+        textColor: scoreColor(Number(score.score)),
         textSize: "32px",
       })}
     />

@@ -24,7 +24,7 @@ export const createJobCandidateScore = validatedCallback({
     //get pdf file text from db and send it to openai
     const pdfFiles = await prisma.pdfFile.findFirst({
       where: {
-        id: input.pdfFiles[0],
+        id: input.pdfFile,
       },
     });
 
@@ -48,7 +48,7 @@ export const createJobCandidateScore = validatedCallback({
             },
             {
               role: "user",
-              content: `Can you produce a score in % and strengths and weaknesses about the compatibility of the job candidate with the job advertisement? Lastly, can you format the response as JSON with the 2 properties names candidateScore, candidateStrength and candidateWeakness. Job candidate's resume: ${cleanedText}
+              content: `Can you produce a score in % as a string without % tag and strengths and weaknesses about the compatibility of the job candidate with the job advertisement? Lastly, can you format the response as JSON with the 3 properties names candidateScore, candidateStrength and candidateWeakness.Be sure candidateStrength and candidateWeakness are string array. You need to mention that there should be no comma after the candidateWeakness property. Please review the JSON data and use the corrected version. Give only JSON object, don't start with """json. Job candidate's resume: ${cleanedText}
               Requirements and details of the job advertisement: ${cleanedJob}`,
             },
           ],
@@ -79,7 +79,7 @@ export const createJobCandidateScore = validatedCallback({
             data: {
               jobId: input.job.id!,
               userId: user.id,
-              score: response.candidateScore,
+              score: response.candidateScore.toString(),
               response: JSON.stringify(response),
               candidateName: pdfFiles.candidateName,
             },

@@ -1,6 +1,7 @@
 import { PrevButton } from "@/components/ui/buttons";
 import ScoreDetail from "../_components/score-detail";
 import { getCandidateScoreById } from "../loaders";
+import { revalidatePath } from "next/cache";
 
 export default async function ScoreDetailPage({
   params,
@@ -8,7 +9,7 @@ export default async function ScoreDetailPage({
   params: { slug: string };
 }) {
   const score = await getCandidateScoreById(params.slug.toString());
-  console.log("score", score);
+  revalidatePath("/dashboard/scores");
 
   return (
     <section className="container">

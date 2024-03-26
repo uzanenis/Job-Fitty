@@ -17,12 +17,12 @@ interface StateSelectorProps {
 
 const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
   const setStoreSelectedJob = useStore((state) => state.setJob);
-  const setStoreSelectedPdfFiles = useStore((state) => state.setPdfFileIds);
+  //const setStoreSelectedPdfFiles = useStore((state) => state.setPdfFileIds);
 
   const router = useRouter();
 
   const [selectedJob, setSelectedJob] = useState<Job>();
-  const [selectedPdfFiles, setSelectedPdfFiles] = useState<PdfFile[]>([]);
+  const [selectedPdfFiles, setSelectedPdfFiles] = useState<PdfFile>();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const hasOpenAiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY ? true : false;
@@ -43,19 +43,20 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
 
   const handleStartAnalyze = async () => {
     setLoading(true);
-    if (selectedJob && selectedPdfFiles.length > 0) {
+    if (selectedJob && selectedPdfFiles) {
       setStoreSelectedJob(selectedJob);
-      const selectedPdfFilesIds = selectedPdfFiles.map((pdfFile) => pdfFile.id);
-      setStoreSelectedPdfFiles(selectedPdfFilesIds);
-      console.log(selectedPdfFilesIds);
+      const selectedPdfFilesId = selectedPdfFiles.id;
+      //setStoreSelectedPdfFiles(selectedPdfFilesIds);
+      console.log(selectedPdfFilesId);
       const responseData = await createJobCandidateScore({
         job: selectedJob,
-        pdfFiles: selectedPdfFilesIds,
+        pdfFile: selectedPdfFilesId,
       });
       console.table("reponseData", responseData);
       //TODO: redirect to analyze page
       if (responseData.status === 200) {
         router.push(`/dashboard/scores`);
+        router.refresh();
       }
     }
     setLoading(false);
@@ -203,18 +204,16 @@ const StateSelector = ({ jobs, pdfFiles }: StateSelectorProps) => {
               </Transition>
             </div>
           </Combobox>
-          {selectedPdfFiles.length > 0 && (
+          {selectedPdfFiles && (
             <span className="block mt-1 text-sm text-gray-700">
-              {selectedPdfFiles.length} files selected
+              File selected
             </span>
           )}
         </div>
       </div>
       <Button
         onClick={handleStartAnalyze}
-        disabled={
-          !selectedJob || selectedPdfFiles.length === 0 || !hasOpenAiKey
-        }
+        disabled={!selectedJob || !selectedPdfFiles || !hasOpenAiKey}
         className="w-fit text-accent mt-2"
       >
         {loading ? (

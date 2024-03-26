@@ -3,5 +3,5 @@ import { jobSchema } from "./jobs";
 
 export const analyzeSchema = z.object({
   job: jobSchema,
-  pdfFiles: z.array(z.string()),
+  pdfFile: z.string(),
 });

@@ -18,7 +18,6 @@ Keep in mind that the project is not yet complete and has shortcomings. You can 
 
 ![Screenshot 2024-03-26 at 22 07 43](https://github.com/uzanenis/Job-Fitty/assets/73305571/e0cf6c37-301f-4440-a62d-0a97a7ca266b)
 
-
 ## Local Development
 
 Clone the project
